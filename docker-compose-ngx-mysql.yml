@@ -1,0 +1,31 @@
+version: "2"
+services:
+  app:
+    build:
+      context: ./nginx_mysql
+      dockerfile: Dockerfile
+    container_name: nginx_mysql
+    ports:
+      - "80:80"
+    volumes:
+      - ./code:/code
+      - ./site.conf:/etc/nginx/conf.d/site.conf
+    depends_on:
+      - "db"
+      - "phpmyadmin"
+  db:
+    image: percona:latest
+    container_name: mysql_db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: mysql_pma
+    ports:
+      - "8080:80"
+
+
